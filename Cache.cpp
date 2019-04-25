@@ -9,6 +9,10 @@ Cache::Cache()
 {
   mySets = 0;
   myNumSets = 0;
+
+  myNumAccesses = myNumHits = myNumMisses = 0;
+  myCapacity = myBlockSize = myAssociativity = 0;
+  
 }
 
 /* Destructor for the class releases all dynamically allocated memory.
@@ -73,6 +77,7 @@ void Cache::initialize(int capacity, int block_size, int associativity)
 void Cache::addAccess(long long addr)
 {
   // YOUR CODE HERE
+  addr  
 
 }
 

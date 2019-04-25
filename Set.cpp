@@ -31,10 +31,64 @@ void Set::initialize(int numBlocks)
  */
 bool Set::addAccess(long long tag)
 {
+
   bool hit = false;
 
-  // YOUR CODE HERE
+  // get previous and index
+  int prev, index;
 
+  for (int i = 0; i < myAssociativty; i++)
+  {
+      if(myBlocks[i].getTag() == tag &&
+              myBlocks[i].getValid())
+      {
+          hit = true;
+          index = i;
+          prev = myBlokcs[i].getLRU(); 
+          myBlocks[i].setLRU(0);
+      }
+  }
+
+  // increment indeces LRU's if smaller than previous
+  // and not index
+  if (hit)
+  {
+      for (int i = 0; i < myAssociativity; i++)
+          if ( myBlocks[i].getLRU() != -1 &&
+               myBlocks[i].getLRU() < prev &&
+               i != index )
+              myBlocks[i].setLRU(myBlocks[i].getLRU() + 1);
+  }
+  else
+  {
+      // index to find k
+      int k = -1;
+
+      for (int i = 0; i < myAssociativty; i++)
+      {
+          if (myBlocks[i].getLRU() == -1)
+          {
+              prev = myBlocks[i].getLRU();
+              k = i; 
+              break;
+          }
+          if (myBlocks[i].getLRU() > k)
+          {
+              prev = myBlocks[i].getLRU();
+              k = i;
+          }
+      }
+
+      // Set myBlocks[k]'s values
+      myBlocks[k].setTag(tag);
+      myBlocks[k].setValid(true);
+      myBlocks[k].setLRU(0);
+
+      // increment LRU in all blocks if not empty and at index k
+      for(int i = 0; i < myAssociativity; i++)
+          if(myBlocks[i].getLRU() != -1 && j != k)
+              myBlocks[i].setLRU(myBlocks[i].getLRU() + 1);
+  }
   return hit;
 }
 
