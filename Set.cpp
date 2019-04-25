@@ -44,11 +44,7 @@ bool Set::addAccess(long long tag)
       {
           hit = true;
           index = i;
-<<<<<<< HEAD
           previous = myBlocks[i].getLRU(); 
-=======
-          prev = myBlocks[i].getLRU();
->>>>>>> bd67dd90ef9cd74b77a44a03c6a03ceda577c73e
           myBlocks[i].setLRU(0);
       }
   }
@@ -82,12 +78,7 @@ bool Set::addAccess(long long tag)
           }
           if (myBlocks[i].getLRU() > i)
               previous = myBlocks[i].getLRU();
-              prev = -1;
-              break;
-          }
 
-          if (myBlocks[i].getLRU() > k)
-              prev = myBlocks[i].getLRU();
       }
 
       // Set myBlocks[i]'s values
