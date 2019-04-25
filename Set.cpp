@@ -26,8 +26,8 @@ void Set::initialize(int numBlocks)
 
 /* Add an access to this tag to the set.  If the tag is not already in the
  * set, add it and return false to indicate a miss.  If the tag is already
- * in the set, access it and return true to indicate a hit.  In both 
- * cases, update the information for the Block accordingly. 
+ * in the set, access it and return true to indicate a hit.  In both
+ * cases, update the information for the Block accordingly.
  */
 bool Set::addAccess(long long tag)
 {
@@ -44,7 +44,11 @@ bool Set::addAccess(long long tag)
       {
           hit = true;
           index = i;
+<<<<<<< HEAD
           previous = myBlocks[i].getLRU(); 
+=======
+          prev = myBlocks[i].getLRU();
+>>>>>>> bd67dd90ef9cd74b77a44a03c6a03ceda577c73e
           myBlocks[i].setLRU(0);
       }
   }
@@ -55,10 +59,13 @@ bool Set::addAccess(long long tag)
   if (hit)
   {
       for (int i = 0; i < myAssociativity; i++)
+
           if ( myBlocks[i].getLRU() != -1 &&
                myBlocks[i].getLRU() < previous &&
                i != index )
+
               myBlocks[i].setLRU(myBlocks[i].getLRU() + 1);
+
   }
   // else find -1 LRUs 
   else
@@ -75,6 +82,12 @@ bool Set::addAccess(long long tag)
           }
           if (myBlocks[i].getLRU() > i)
               previous = myBlocks[i].getLRU();
+              prev = -1;
+              break;
+          }
+
+          if (myBlocks[i].getLRU() > k)
+              prev = myBlocks[i].getLRU();
       }
 
       // Set myBlocks[i]'s values
@@ -87,7 +100,9 @@ bool Set::addAccess(long long tag)
           if(myBlocks[j].getLRU() != -1 && j != i)
               myBlocks[j].setLRU(myBlocks[j].getLRU() + 1);
   }
+
   return hit;
+  
 }
 
 /* Print the contents of the set to stdout.  The argument specifies which
@@ -97,12 +112,11 @@ void Set::printSet(int set)
 {
   cout << "****** SET " << set << "****** " << endl;
   for(int i = 0; i < myAssociativity; i++){
-    cout << "Index " << i << ": tag " << hex << myBlocks[i].getTag() 
+    cout << "Index " << i << ": tag " << hex << myBlocks[i].getTag()
 	 << " valid "<< dec << myBlocks[i].getValid()
-	 << " lru " << myBlocks[i].getLRU() 
+	 << " lru " << myBlocks[i].getLRU()
 	 << endl;
   }
   cout << "***************** " << endl;
 
 }
-
