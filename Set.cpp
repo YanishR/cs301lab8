@@ -37,14 +37,14 @@ bool Set::addAccess(long long tag)
   // get previous and index
   int prev, index;
 
-  for (int i = 0; i < myAssociativty; i++)
+  for (int i = 0; i < myAssociativity; i++)
   {
       if(myBlocks[i].getTag() == tag &&
               myBlocks[i].getValid())
       {
           hit = true;
           index = i;
-          prev = myBlokcs[i].getLRU(); 
+          prev = myBlocks[i].getLRU(); 
           myBlocks[i].setLRU(0);
       }
   }
@@ -64,7 +64,7 @@ bool Set::addAccess(long long tag)
       // index to find k
       int k = -1;
 
-      for (int i = 0; i < myAssociativty; i++)
+      for (int i = 0; i < myAssociativity; i++)
       {
           if (myBlocks[i].getLRU() == -1)
           {
@@ -86,7 +86,7 @@ bool Set::addAccess(long long tag)
 
       // increment LRU in all blocks if not empty and at index k
       for(int i = 0; i < myAssociativity; i++)
-          if(myBlocks[i].getLRU() != -1 && j != k)
+          if(myBlocks[i].getLRU() != -1 && i != k)
               myBlocks[i].setLRU(myBlocks[i].getLRU() + 1);
   }
   return hit;
