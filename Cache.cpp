@@ -1,6 +1,6 @@
 #include "Cache.h"
 
-/* 
+/*
  * This method just creates an instance of the class.  However, there is
  * no default configuration of the class, so the initialize() method must
  * be called to actually create a cache that is properly configured.
@@ -24,7 +24,7 @@ Cache::~Cache()
  * to be specified in bytes.  The set associativity is by default set
  * to 1 (direct mapped) if no argument is specified.  All of the three
  * arguments must be powers of two.  Additionally, the capacity divided
- * by the (block_size * associativity) must not have a fractional 
+ * by the (block_size * associativity) must not have a fractional
  * component.  Finally, the method prints out information about the
  * configuration of the cache (see example output files).
  */
@@ -54,7 +54,7 @@ void Cache::initialize(int capacity, int block_size, int associativity)
 
   myNumSets = capacity / (block_size * associativity);
   mySets = new Set[myNumSets];
-  
+
   for(int i = 0; i < myNumSets; i++){
     mySets[i].initialize(myAssociativity);
   }
@@ -66,14 +66,26 @@ void Cache::initialize(int capacity, int block_size, int associativity)
 
 }
 
-/* Adds the address specified as an access to the current cache contents, 
+/* Adds the address specified as an access to the current cache contents,
  * potentially evicting an existing entry in the cache.  The address
  * is specified in bytes.
  */
 void Cache::addAccess(long long addr)
 {
-  // YOUR CODE HERE
+    //we compute the block address, tag and the index.
+    long long blockAddr = addr/myBlockSize;
+    long long tag = blockAddr/myNumSets;
+    int index = blockAddr % myNumSets;
 
+
+    if(mySets[index].addAccess(tag))
+      myNumHits++;
+
+    else//we encountered a miss
+      myNumMisses++;
+
+
+    myNumAccesses++;
 }
 
 /* Prints the current contents of the cache.  The output is organized
@@ -98,7 +110,7 @@ void Cache::printStatistics()
 
 }
 
-/* Returns the number of accesses made to the cache. 
+/* Returns the number of accesses made to the cache.
  */
 long long Cache::getNumberAccesses()
 {
